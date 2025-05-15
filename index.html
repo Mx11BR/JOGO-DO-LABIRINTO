@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo do Labirinto UNIFACS</title>
+    
+    <!-- Adicionando fonte estilo retrô -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <!-- CSS externo -->
+</head>
+<body>
+    <h1>Jogo do Labirinto UNIFACS</h1>
+    <div>
+        <button id="iniciar" aria-label="Iniciar o jogo">Iniciar</button>
+        <button id="reiniciar" aria-label="Reiniciar o jogo" disabled>Reiniciar</button>
+    </div>
+    <div id="mensagem" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 10px;">
+        <span id="mensagem-texto"></span>
+        <button id="fechar-mensagem" style="margin-left: 10px;">Fechar</button>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div class="footer">Desenvolvido por Marx Lenin e Leonardo</div>
+    <script src="Jogo.js"></script>
+</body>
+</html>

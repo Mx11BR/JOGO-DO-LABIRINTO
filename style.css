@@ -1,0 +1,133 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive; /* Fonte padrão */
+}
+
+/* Estilo geral */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1E1E1E; /* Fundo cinza escuro */
+    color: #FFFFFF; /* Texto branco */
+}
+
+/* Título */
+h1 {
+    font-size: 24px;
+    text-shadow: 2px 2px 4px #FFD700; /* Efeito de brilho amarelo */
+    margin-bottom: 10px; /* Reduz o espaçamento inferior */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Canvas */
+#canvas {
+    max-width: 100%;
+    max-height: 100%;
+    border: 3px solid #00CED1; /* Borda azul-turquesa */
+    display: block;
+    margin: auto;
+    box-shadow: 0 0 30px #00CED1, 0 0 60px #1E90FF; /* Efeito de brilho no canvas */
+    background-color: #1E1E1E; /* Fundo cinza escuro */
+}
+
+/* Entrada */
+.entrada {
+    background-color: #32CD32; /* Verde claro */
+    border-radius: 10%; /* Bordas arredondadas */
+    box-shadow: 0 0 10px #32CD32; /* Efeito de brilho na entrada */
+}
+
+/* Saída */
+.saida {
+    background-color: #FF6347; /* Vermelho tomate */
+    border-radius: 10%; /* Bordas arredondadas */
+    box-shadow: 0 0 10px #FF6347; /* Efeito de brilho na saída */
+}
+
+/* Jogador */
+.jogador {
+    background-color: #FFD700; /* Amarelo vibrante */
+    border-radius: 50%; /* Transformar em círculo */
+    box-shadow: 0 0 15px #FFD700; /* Efeito de brilho no jogador */
+}
+
+/* Rastro */
+.rastro {
+    background-color: #87CEEB; /* Azul claro */
+    box-shadow: inset 0 0 5px #1E90FF; /* Efeito de profundidade no rastro */
+}
+
+/* Botões */
+button {
+    margin: 5px; /* Reduz o espaçamento entre os botões */
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #00CED1; /* Azul-turquesa */
+    color: #FFFFFF; /* Texto branco */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px #008B8B; /* Sombra */
+    transition: all 0.3s ease; /* Transição suave */
+}
+
+button:hover {
+    background-color: #008B8B; /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.1); /* Aumenta o botão ao passar o mouse */
+}
+
+button:active {
+    box-shadow: none;
+    transform: translateY(2px); /* Efeito de clique */
+}
+
+/* Centralizar os botões */
+.botao-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Espaçamento entre os botões e o labirinto */
+}
+
+/* Rodapé */
+.footer {
+    margin-top: 20px; /* Aumenta o espaçamento superior */
+    font-size: 14px; /* Aumenta o tamanho da fonte */
+    color: #B0C4DE; /* Azul claro */
+    text-align: center;
+    opacity: 0.9; /* Deixa o texto mais visível */
+    position: relative;
+    bottom: 10px;
+    width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #canvas {
+        width: 90%;
+        height: auto;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    button {
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+}
+
