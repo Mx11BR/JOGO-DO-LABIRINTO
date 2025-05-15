@@ -20,6 +20,11 @@ function ajustarCanvas() {
     tamanhoCelula = canvas.width / colunas; // Atualiza o tamanho da célula
 }
 
+// Adicione estas variáveis no início do arquivo
+let jogoPausado = false;
+let intervalo;
+const botaoPausar = document.getElementById('pausar');
+
 // Classe para representar uma célula do labirinto
 class Celula {
     constructor(x, y) {
@@ -183,12 +188,11 @@ function desenhar() {
     jogador.desenhar();
 }
 
-let intervalo; // Variável para armazenar o intervalo do movimento do jogador
-let jogoPausado = false; // Variável para controlar o estado do jogo
-
 function reiniciarJogo() {
     clearTimeout(intervalo);
     jogoPausado = false;
+    botaoPausar.textContent = 'Pausar';
+    botaoPausar.disabled = true;
 
     grade.forEach(celula => {
         celula.visitada = false;
@@ -266,6 +270,21 @@ function exibirMensagem(texto) {
     mensagem.style.display = 'block';
 }
 
+// Função para pausar/continuar o jogo
+function pausarContinuarJogo() {
+    jogoPausado = !jogoPausado;
+
+    if (jogoPausado) {
+        clearTimeout(intervalo);
+        botaoPausar.textContent = 'Continuar';
+        console.log('Jogo pausado.');
+    } else {
+        botaoPausar.textContent = 'Pausar';
+        moverJogadorDinamico(); // Continua o movimento
+        console.log('Jogo continuado.');
+    }
+}
+
 // Inicialização do labirinto
 function inicializarLabirinto() {
     // Limpa o canvas
@@ -300,6 +319,7 @@ function iniciarJogo() {
     document.getElementById('iniciar').disabled = true;
 
     // Habilita o botão "Reiniciar"
+    botaoPausar.disabled = false;
     document.getElementById('reiniciar').disabled = false;
 
     console.log('Jogo iniciado.');
@@ -308,6 +328,7 @@ function iniciarJogo() {
 // Adicione os eventos para os botões
 document.getElementById('iniciar').addEventListener('click', iniciarJogo);
 document.getElementById('reiniciar').addEventListener('click', reiniciarJogo);
+botaoPausar.addEventListener('click', pausarContinuarJogo);
 document.getElementById('fechar-mensagem').addEventListener('click', () => {
     document.getElementById('mensagem').style.display = 'none';
 });
