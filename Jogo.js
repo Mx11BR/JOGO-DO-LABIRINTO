@@ -25,6 +25,7 @@ function ajustarCanvas() {
 // Adicione estas variáveis no início do arquivo
 let jogoPausado = false;
 let intervalo;
+let jogoFinalizado = false;
 const botaoPausar = document.getElementById('pausar');
 
 // Classe para representar uma célula do labirinto
@@ -193,6 +194,7 @@ function desenhar() {
 function reiniciarJogo() {
     clearTimeout(intervalo);
     jogoPausado = false;
+    jogoFinalizado = false; // Reseta o estado de finalizado
     botaoPausar.textContent = 'Pausar';
     botaoPausar.disabled = true;
 
@@ -201,7 +203,6 @@ function reiniciarJogo() {
         celula.rastro = false;
     });
 
-    // Sorteia nova entrada e saída, reseta o labirinto e o jogador
     inicializarLabirinto();
     gerarLabirintoCompleto();
     resetarVisitadas();
@@ -216,7 +217,7 @@ function moverJogadorDinamico() {
     const caminho = []; // Pilha para armazenar o caminho percorrido
 
     function moverParaProximoPasso() {
-        if (jogoPausado) return; // Interrompe o movimento se o jogo estiver pausado
+        if (jogoPausado || jogoFinalizado) return; // Interrompe se pausado ou finalizado
 
         const celulaAtual = grade[indice(jogador.x, jogador.y)];
         celulaAtual.rastro = true; // Marca a célula atual como parte do rastro
@@ -254,7 +255,9 @@ function moverJogadorDinamico() {
         if (jogador.x === saidaX && jogador.y === saidaY) {
             console.log('Jogador chegou ao final do labirinto!');
             exibirMensagem('Parabéns! Você chegou ao final do labirinto! Clique em "Reiniciar" para jogar novamente.');
-            return; // Interrompe o movimento
+            jogoFinalizado = true;
+            botaoPausar.disabled = true; // Desabilita o botão de pausar
+            return;
         }
 
         intervalo = setTimeout(moverParaProximoPasso, 100);
@@ -273,6 +276,8 @@ function exibirMensagem(texto) {
 
 // Função para pausar/continuar o jogo
 function pausarContinuarJogo() {
+    if (jogoFinalizado) return; // Não faz nada se o jogo foi finalizado
+    
     jogoPausado = !jogoPausado;
 
     if (jogoPausado) {
@@ -337,14 +342,12 @@ function inicializarLabirinto() {
 
 // Função principal para inicializar e executar o jogo
 function iniciarJogo() {
-    resetarVisitadas(); // Reseta o estado de visitadas
-    desenhar(); // Desenha o labirinto inicial
-    moverJogadorDinamico(); // Inicia o movimento do jogador
+    jogoFinalizado = false; // Garante que o estado seja resetado
+    resetarVisitadas();
+    desenhar();
+    moverJogadorDinamico();
 
-    // Desativa o botão "Iniciar"
     document.getElementById('iniciar').disabled = true;
-
-    // Habilita o botão "Reiniciar"
     botaoPausar.disabled = false;
     document.getElementById('reiniciar').disabled = false;
 
