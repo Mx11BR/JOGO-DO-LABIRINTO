@@ -4,6 +4,8 @@
 const canvas = document.getElementById('canvas'); // Seleciona o canvas pelo ID
 const ctx = canvas.getContext('2d'); // Obtém o contexto 2D
 
+// Adicione estas variáveis no início do arquivo
+let entradaX, entradaY, saidaX, saidaY;
 let tamanhoCelula = 20; // Alterado de const para let
 const colunas = 25;
 const linhas = 25;
@@ -31,7 +33,7 @@ class Celula {
         this.x = x;
         this.y = y;
         this.visitada = false;
-        this.rastro = false; // Indica se o jogador passou por esta célula
+        this.rastro = false;
         this.paredes = { cima: true, direita: true, baixo: true, esquerda: true };
     }
 
@@ -40,9 +42,9 @@ class Celula {
         const y = this.y * tamanhoCelula;
 
         // Cor de fundo para entrada, saída e rastro
-        if (this.x === 0 && this.y === 0) {
+        if (this.x === entradaX && this.y === entradaY) {
             ctx.fillStyle = '#4CAF50'; // Verde para entrada
-        } else if (this.x === colunas - 1 && this.y === linhas - 1) {
+        } else if (this.x === saidaX && this.y === saidaY) {
             ctx.fillStyle = '#F44336'; // Vermelho para saída
         } else if (this.rastro) {
             ctx.fillStyle = '#FFEB3B'; // Amarelo para o rastro do jogador
@@ -199,15 +201,14 @@ function reiniciarJogo() {
         celula.rastro = false;
     });
 
-    jogador.x = 0;
-    jogador.y = 0;
-
+    // Sorteia nova entrada e saída, reseta o labirinto e o jogador
     inicializarLabirinto();
     gerarLabirintoCompleto();
     resetarVisitadas();
     desenhar();
 
     document.getElementById('iniciar').disabled = false;
+    document.getElementById('reiniciar').disabled = true;
 }
 
 // Movimento dinâmico do jogador
@@ -231,8 +232,8 @@ function moverJogadorDinamico() {
 
         // Ordena os vizinhos pela distância de Manhattan até a saída
         vizinhos.sort((a, b) => {
-            const distanciaA = Math.abs(a.celula.x - (colunas - 1)) + Math.abs(a.celula.y - (linhas - 1));
-            const distanciaB = Math.abs(b.celula.x - (colunas - 1)) + Math.abs(b.celula.y - (linhas - 1));
+            const distanciaA = Math.abs(a.celula.x - saidaX) + Math.abs(a.celula.y - saidaY);
+            const distanciaB = Math.abs(b.celula.x - saidaX) + Math.abs(b.celula.y - saidaY);
             return distanciaA - distanciaB;
         });
 
@@ -250,7 +251,7 @@ function moverJogadorDinamico() {
         desenhar();
 
         // Verifica se o jogador chegou à saída
-        if (jogador.x === colunas - 1 && jogador.y === linhas - 1) {
+        if (jogador.x === saidaX && jogador.y === saidaY) {
             console.log('Jogador chegou ao final do labirinto!');
             exibirMensagem('Parabéns! Você chegou ao final do labirinto! Clique em "Reiniciar" para jogar novamente.');
             return; // Interrompe o movimento
@@ -291,8 +292,8 @@ function inicializarLabirinto() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Limpa a grade e a pilha
-    grade.length = 0; // Limpa a grade antes de inicializar
-    pilha.length = 0; // Limpa a pilha
+    grade.length = 0;
+    pilha.length = 0;
 
     // Recria as células do labirinto
     for (let y = 0; y < linhas; y++) {
@@ -301,12 +302,37 @@ function inicializarLabirinto() {
         }
     }
 
-    // Define a célula inicial
-    atual = grade[0];
+    // Define posições aleatórias para entrada e saída (em paredes opostas)
+    const ladoEntrada = Math.floor(Math.random() * 4); // 0: cima, 1: direita, 2: baixo, 3: esquerda
+    const ladoSaida = (ladoEntrada + 2) % 4; // Lado oposto
+
+    // Função auxiliar para obter coordenadas em um lado específico
+    const obterCoordenadasNoLado = (lado) => {
+        switch(lado) {
+            case 0: // Cima
+                return [Math.floor(Math.random() * colunas), 0];
+            case 1: // Direita
+                return [colunas - 1, Math.floor(Math.random() * linhas)];
+            case 2: // Baixo
+                return [Math.floor(Math.random() * colunas), linhas - 1];
+            case 3: // Esquerda
+                return [0, Math.floor(Math.random() * linhas)];
+        }
+    };
+
+    [entradaX, entradaY] = obterCoordenadasNoLado(ladoEntrada);
+    [saidaX, saidaY] = obterCoordenadasNoLado(ladoSaida);
+
+    // Define a célula inicial (entrada)
+    atual = grade[indice(entradaX, entradaY)];
     if (atual) {
-        atual.visitada = true; // Marca a célula inicial como visitada
+        atual.visitada = true;
     }
-    pilha.push(atual); // Adiciona a célula inicial à pilha
+    pilha.push(atual);
+
+    // Posiciona o jogador na entrada
+    jogador.x = entradaX;
+    jogador.y = entradaY;
 }
 
 // Função principal para inicializar e executar o jogo
