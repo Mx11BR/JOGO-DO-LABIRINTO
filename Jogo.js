@@ -2,7 +2,7 @@
 // LABIRINTO COM BACKTRACKING
 // ===============================
 
-// --- Seleção do canvas e contexto ---
+// --- Seleciona o canvas e contexto ---
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -39,7 +39,7 @@ class Celula {
         this.rastro = false;
         this.paredes = { cima: true, direita: true, baixo: true, esquerda: true };
     }
-
+    // Método para desenhar a célula no canvas
     desenhar() {
         const x = this.x * tamanhoCelula;
         const y = this.y * tamanhoCelula;
@@ -68,7 +68,7 @@ class Celula {
     }
 }
 
-// --- Estrutura do labirinto ---
+//  Estrutura do labirinto 
 const grade = [];
 let atual;
 const pilha = [];
@@ -101,6 +101,7 @@ function obterVizinhos(x, y) {
 // GERAÇÃO DO LABIRINTO
 // ===============================
 
+// Função para gerar o labirinto usando backtracking
 function gerarLabirinto() {
     atual.visitada = true;
     const vizinhos = [];
@@ -243,7 +244,7 @@ function moverJogadorDinamico() {
 
         desenhar();
 
-        // Chegou à saída?
+        // Verifica se chegou à saída
         if (jogador.x === saidaX && jogador.y === saidaY) {
             console.log('Jogador chegou ao final do labirinto!');
             exibirMensagem('Parabéns! Você chegou ao final do labirinto! Clique em "Reiniciar" para jogar novamente.');
