@@ -1,6 +1,5 @@
-// ===============================
+
 // LABIRINTO COM BACKTRACKING
-// ===============================
 
 // --- Seleciona o canvas e contexto ---
 const canvas = document.getElementById('canvas');
@@ -26,9 +25,7 @@ function ajustarCanvas() {
     tamanhoCelula = canvas.width / colunas;
 }
 
-// ===============================
 // CLASSE E FUNÇÕES DO LABIRINTO
-// ===============================
 
 // --- Classe Celula ---
 class Celula {
@@ -97,9 +94,7 @@ function obterVizinhos(x, y) {
     };
 }
 
-// ===============================
 // GERAÇÃO DO LABIRINTO
-// ===============================
 
 // Função para gerar o labirinto usando backtracking
 function gerarLabirinto() {
@@ -131,9 +126,7 @@ function resetarVisitadas() {
     grade.forEach(celula => celula.visitada = false);
 }
 
-// ===============================
 // JOGADOR
-// ===============================
 
 const jogador = {
     x: 0,
@@ -176,9 +169,7 @@ const jogador = {
     }
 };
 
-// ===============================
 // DESENHO E CONTROLE DE JOGO
-// ===============================
 
 function desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -225,6 +216,7 @@ function moverJogadorDinamico() {
         if (esquerda && !esquerda.visitada && !celulaAtual.paredes.esquerda) vizinhos.push({ direcao: 'esquerda', celula: esquerda });
 
         // Ordena vizinhos pela distância até a saída
+        //Utiliza a distância Manhattan para ordenar os vizinhos 
         vizinhos.sort((a, b) => {
             const distanciaA = Math.abs(a.celula.x - saidaX) + Math.abs(a.celula.y - saidaY);
             const distanciaB = Math.abs(b.celula.x - saidaX) + Math.abs(b.celula.y - saidaY);
@@ -258,9 +250,7 @@ function moverJogadorDinamico() {
     moverParaProximoPasso();
 }
 
-// ===============================
 // INTERFACE E CONTROLE DE BOTÕES
-// ===============================
 
 function exibirMensagem(texto) {
     const mensagemTexto = document.getElementById('mensagem-texto');
@@ -283,9 +273,7 @@ function pausarContinuarJogo() {
     }
 }
 
-// ===============================
 // INICIALIZAÇÃO DO LABIRINTO
-// ===============================
 
 function inicializarLabirinto() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -325,9 +313,7 @@ function inicializarLabirinto() {
     jogador.y = entradaY;
 }
 
-// ===============================
 // FUNÇÃO PRINCIPAL DE INÍCIO
-// ===============================
 
 function iniciarJogo() {
     jogoFinalizado = false;
@@ -342,9 +328,7 @@ function iniciarJogo() {
     console.log('Jogo iniciado.');
 }
 
-// ===============================
 // EVENTOS DE INTERFACE
-// ===============================
 
 document.getElementById('iniciar').addEventListener('click', iniciarJogo);
 document.getElementById('reiniciar').addEventListener('click', reiniciarJogo);
@@ -353,9 +337,7 @@ document.getElementById('fechar-mensagem').addEventListener('click', () => {
     document.getElementById('mensagem').style.display = 'none';
 });
 
-// ===============================
 // INICIALIZAÇÃO AUTOMÁTICA
-// ===============================
 
 window.onload = () => {
     ajustarCanvas();
