@@ -76,6 +76,7 @@ function indice(x, y) {
     return x + y * colunas;
 }
 
+// Função para remover paredes entre duas células
 function removerParedes(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
@@ -84,7 +85,7 @@ function removerParedes(a, b) {
     if (dy === 1) { a.paredes.cima = false; b.paredes.baixo = false; }
     else if (dy === -1) { a.paredes.baixo = false; b.paredes.cima = false; }
 }
-
+// Função para obter vizinhos de uma célula
 function obterVizinhos(x, y) {
     return {
         cima: grade[indice(x, y - 1)],
@@ -106,6 +107,7 @@ function gerarLabirinto() {
     if (baixo && !baixo.visitada) vizinhos.push(baixo);
     if (esquerda && !esquerda.visitada) vizinhos.push(esquerda);
 
+    // Se houver vizinhos não visitados, escolhe um aleatoriamente
     if (vizinhos.length > 0) {
         const proximo = vizinhos[Math.floor(Math.random() * vizinhos.length)];
         pilha.push(atual);
@@ -148,6 +150,7 @@ const jogador = {
             esquerda: { x: this.x - 1, y: this.y },
         }[direcao];
 
+        // Verifica se o destino está dentro dos limites do labirinto
         if (destino) {
             const celulaAtual = grade[indice(this.x, this.y)];
             const celulaDestino = grade[indice(destino.x, destino.y)];
